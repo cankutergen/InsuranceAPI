@@ -1,4 +1,4 @@
-﻿using Insurance.Business.Factory.Insurance.Abstract;
+﻿using Insurance.Business.Factory.InsuranceRule.Abstract;
 using Insurance.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.Business.Factory.Insurance.RegularRules
+namespace Insurance.Business.Factory.InsuranceRule.RegularRules
 {
-    public class NoInsuranceRule : IRegularInsuranceRule
+    public class MidInsuranceRule : IRegularInsuranceRule
     {
         public float GetInsuranceAmount()
         {
-            return 0;
+            return 1000;
         }
     }
 }

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.Business.Factory.Insurance.Abstract
+namespace Insurance.Business.Factory.InsuranceOrderRule.Abstract
 {
-    public interface IInsuranceRule
+    public interface ISpecialInsuranceOrderRule
     {
-        float GetInsuranceAmount();
     }
 }

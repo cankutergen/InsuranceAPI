@@ -1,5 +1,5 @@
-﻿using Insurance.Business.Factory.Insurance.Abstract;
-using Insurance.Business.Factory.Insurance.RegularRules;
+﻿using Insurance.Business.Factory.InsuranceRule.Abstract;
+using Insurance.Business.Factory.InsuranceRule.RegularRules;
 using System;
 using System.Collections.Generic;
 using System.Linq;

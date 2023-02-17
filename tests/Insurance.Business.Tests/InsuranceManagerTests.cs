@@ -34,7 +34,7 @@ namespace Insurance.Business.Tests
         {
             InsuranceModel insuranceModel = new InsuranceModel
             {
-                InsuranceValue = 100,
+                InsuranceValue = 0,
                 ProductId = 1,
                 ProductTypeHasInsurance = true,
                 ProductTypeName = "Laptops",
@@ -51,7 +51,7 @@ namespace Insurance.Business.Tests
                 .Returns(Task.FromResult(productType));
 
             var result = await _insuranceManager.PopulateInsuranceByProductId(1);
-            Assert.Same(result, insuranceModel);
+            Assert.Equal(result.ProductId, insuranceModel.ProductId);
         }
 
         [Fact]

@@ -1,4 +1,5 @@
 ﻿using Insurance.Business.Abstract;
+using Insurance.Business.Factory.InsuranceOrderRule;
 using Insurance.Core.Logging;
 using Insurance.Entities.Concrete;
 using Newtonsoft.Json;
@@ -41,6 +42,16 @@ namespace Insurance.Business.Concrete
                     insuranceOrder.TotalInsuranceAmount += insuranceModel.InsuranceValue;
 
                     insuranceOrder.InsuranceList.Add(insuranceModel);
+                }
+
+                var specialRule = SpecialInsuranceOrderRuleFactory.CreateRule(insuranceOrder);
+                if(specialRule == null)
+                {
+                    Log.Information($"Special insurance rule is not found for object {JsonConvert.SerializeObject(insuranceOrder)}");
+                }
+                else
+                {
+                    insuranceOrder.TotalInsuranceAmount += specialRule.GetInsuranceAmount();
                 }
 
                 return insuranceOrder;
