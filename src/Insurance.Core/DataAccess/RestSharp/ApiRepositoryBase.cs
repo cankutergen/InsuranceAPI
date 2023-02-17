@@ -41,7 +41,7 @@ namespace Insurance.Core.DataAccess.RestSharp
                 if (errorModel.Status != 0)
                 {
                     string errorMessage = JsonConvert.SerializeObject(errorModel);
-                    Log.Information(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), errorMessage, query));
+                    return null;
                 }
 
                 return JsonConvert.DeserializeObject<TResponse>(result.Content);
@@ -49,7 +49,7 @@ namespace Insurance.Core.DataAccess.RestSharp
             catch (Exception ex)
             {
                 Log.Error(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(ex), query));
-                return null;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -65,7 +65,7 @@ namespace Insurance.Core.DataAccess.RestSharp
                 if (errorModel.Status != 0)
                 {
                     string errorMessage = JsonConvert.SerializeObject(errorModel);
-                    Log.Information(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), errorMessage, query));
+                    return null;
                 }
 
                 return JsonConvert.DeserializeObject<List<TResponse>>(result.Content);
@@ -73,7 +73,7 @@ namespace Insurance.Core.DataAccess.RestSharp
             catch (Exception ex)
             {
                 Log.Error(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(ex), query));
-                return new List<TResponse>();
+                throw new Exception(ex.Message);
             }
         }
     }

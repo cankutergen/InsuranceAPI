@@ -125,6 +125,7 @@ namespace Insurance.Business.Tests
                 ProductId = 1,
                 ProductTypeHasInsurance = true,
                 ProductTypeName = "Laptops",
+                ProductTypeId = 21,
                 SalesPrice = 499
             };
 
@@ -161,6 +162,7 @@ namespace Insurance.Business.Tests
                 ProductId = 1,
                 ProductTypeHasInsurance = true,
                 ProductTypeName = "Smartphones",
+                ProductTypeId = 32,
                 SalesPrice = 1500
             };
 
@@ -197,6 +199,7 @@ namespace Insurance.Business.Tests
                 ProductId = 1,
                 ProductTypeHasInsurance = true,
                 ProductTypeName = "Smartphones",
+                ProductTypeId = 32,
                 SalesPrice = 2390
             };
 

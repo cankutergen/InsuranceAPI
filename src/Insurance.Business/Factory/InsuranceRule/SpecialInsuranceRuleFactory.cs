@@ -10,13 +10,13 @@ namespace Insurance.Business.Factory.Insurance
 {
     public class SpecialInsuranceRuleFactory
     {
-        public static ISpecialInsuranceRule CreateRule(string productType)
+        public static ISpecialInsuranceRule CreateRule(int productTypeId)
         {
-            switch (productType)
+            switch (productTypeId)
             {
-                case "Smartphones":
+                case 32:
                     return new SmartphoneInsuranceRule();
-                case "Laptops":
+                case 21:
                     return new LaptopInsuranceRule();
                 default:
                     return null;

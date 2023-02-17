@@ -15,14 +15,15 @@ using Serilog;
 
 namespace Insurance.Api.Controllers
 {
-    public class HomeController: Controller
+    public class InsuranceController: Controller
     {
         private readonly IInsuranceService _insuranceService;
         private readonly IInsuranceOrderService _insuranceOrderService;
         private readonly IMapper _mapper;
         private readonly ILogBuilder _logBuilder;
 
-        public HomeController(IInsuranceService insuranceService, IInsuranceOrderService insuranceOrderService, IMapper mapper, ILogBuilder logBuilder)
+        
+        public InsuranceController(IInsuranceService insuranceService, IInsuranceOrderService insuranceOrderService, IMapper mapper, ILogBuilder logBuilder)
         {
             _insuranceService = insuranceService;
             _insuranceOrderService = insuranceOrderService;

@@ -39,17 +39,6 @@ namespace Insurance.Business.Tests
         }
 
         [Fact]
-        public async Task GetAllProducts_WhenErrorThrown_ShouldReturnDefaultList()
-        {
-            _productApiMock.Setup(x => x.GetList(It.IsAny<string>()))
-                .Throws(new NullReferenceException());
-
-            var result = await _productManager.GetAllProducts();
-
-            Assert.Empty(result);
-        }
-
-        [Fact]
         public async Task GetProductById_GivenProductId_ShouldReturnCorrespondingProduct()
         {
             Product product = new Product { Id = 1, Name = "Laptop", ProductTypeId = 1, SalesPrice = 100 };
@@ -60,17 +49,6 @@ namespace Insurance.Business.Tests
             var result = await _productManager.GetProductById(product.Id);
 
             Assert.Same(product, result);
-        }
-
-        [Fact]
-        public async Task GetProductById_WhenErrorThrown_ShouldReturnNull()
-        {
-            _productApiMock.Setup(x => x.Get("/products/1"))
-                .Throws(new NullReferenceException());
-
-            var result = await _productManager.GetProductById(1);
-
-            Assert.Null(result);
         }
     }
 }

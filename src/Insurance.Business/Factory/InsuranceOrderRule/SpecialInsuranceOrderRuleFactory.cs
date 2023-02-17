@@ -13,7 +13,7 @@ namespace Insurance.Business.Factory.InsuranceOrderRule
     {
         public static ISpecialInsuranceRule CreateRule(InsuranceOrder insuranceOrder)
         {
-            bool containsDigitalCameras = insuranceOrder.InsuranceList.Any(x => x.ProductTypeName == "Digital cameras");
+            bool containsDigitalCameras = insuranceOrder.InsuranceList.Any(x => x.ProductTypeId == 33);
             if (containsDigitalCameras)
             {
                 return new DigitalCamerasInsuranceRule();

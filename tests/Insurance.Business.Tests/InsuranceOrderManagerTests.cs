@@ -69,7 +69,7 @@ namespace Insurance.Business.Tests
                 .Returns(Task.FromResult(new InsuranceModel()));
 
             _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
-                .Returns(new InsuranceModel() { InsuranceValue = 500, ProductTypeName = "Digital cameras" });
+                .Returns(new InsuranceModel() { InsuranceValue = 500, ProductTypeId = 33 });
 
             var result = await _insuranceOrderManager.PopulateInsuranceOrderByProductIdList(new List<int> { 1, 2, 3 });
             Assert.Equal(2000, result.TotalInsuranceAmount);
