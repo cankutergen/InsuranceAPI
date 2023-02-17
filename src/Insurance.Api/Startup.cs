@@ -45,11 +45,10 @@ namespace Insurance.Api
             services.AddScoped<IProductApi>(provider => new ProductApi(new RestClient(Configuration.GetValue<string>("ApiBase:ProductApi")), new LogBuilder()));
             services.AddScoped<IProductTypeApi>(provider => new ProductTypeApi(new RestClient(Configuration.GetValue<string>("ApiBase:ProductTypeApi")), new LogBuilder()));
 
-            services.AddScoped<IInsuranceBuilder, InsuranceBuilder>();
-
             services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<IProductTypeService, ProductTypeManager>();
             services.AddScoped<IInsuranceService, InsuranceManager>();
+            services.AddScoped<IInsuranceOrderService, InsuranceOrderManager>();
 
             services.AddScoped<ILogBuilder, LogBuilder>();
 

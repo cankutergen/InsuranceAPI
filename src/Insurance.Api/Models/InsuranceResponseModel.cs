@@ -1,8 +1,6 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Insurance.Api.Models
+﻿namespace Insurance.Api.Models
 {
-    public class InsuranceApiModel
+    public class InsuranceResponseModel
     {
         public int ProductId { get; set; }
 
