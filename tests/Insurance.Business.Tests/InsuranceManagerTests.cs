@@ -16,7 +16,6 @@ namespace Insurance.Business.Tests
     {
         private readonly Mock<IProductService> _productServiceMock;
         private readonly Mock<IProductTypeService> _productTypeServiceMock;
-        private readonly Mock<IInsuranceBuilder> _insuranceBuilderMock;
         private readonly Mock<ILogBuilder> _logBuilderMock;
 
         private readonly InsuranceManager _insuranceManager;
@@ -25,10 +24,9 @@ namespace Insurance.Business.Tests
         {
             _productServiceMock = new Mock<IProductService>();
             _productTypeServiceMock = new Mock<IProductTypeService>();
-            _insuranceBuilderMock = new Mock<IInsuranceBuilder>();
             _logBuilderMock = new Mock<ILogBuilder>();
 
-            _insuranceManager = new InsuranceManager(_productServiceMock.Object, _productTypeServiceMock.Object, _insuranceBuilderMock.Object, _logBuilderMock.Object);
+            _insuranceManager = new InsuranceManager(_productServiceMock.Object, _productTypeServiceMock.Object, _logBuilderMock.Object);
         }
 
         [Fact]
@@ -51,9 +49,6 @@ namespace Insurance.Business.Tests
 
             _productTypeServiceMock.Setup(x => x.GetProductTypeById(1))
                 .Returns(Task.FromResult(productType));
-
-            _insuranceBuilderMock.Setup(x => x.BuildWithProductInformation(product, productType))
-                .Returns(insuranceModel);
 
             var result = await _insuranceManager.PopulateInsuranceByProductId(1);
             Assert.Same(result, insuranceModel);

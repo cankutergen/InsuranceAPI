@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Insurance.Business.Builder.Insurance
 {
-    public class InsuranceBuilder : IInsuranceBuilder
+    public class InsuranceBuilder
     {
         private InsuranceModel _insuranceModel;
 

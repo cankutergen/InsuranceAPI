@@ -18,14 +18,12 @@ namespace Insurance.Business.Concrete
     {
         private readonly IProductService _productService;
         private readonly IProductTypeService _productTypeService;
-        private readonly IInsuranceBuilder _insuranceBuilder;
         private readonly ILogBuilder _logBuilder;
 
-        public InsuranceManager(IProductService productService, IProductTypeService productTypeService, IInsuranceBuilder insuranceBuilder, ILogBuilder logBuilder)
+        public InsuranceManager(IProductService productService, IProductTypeService productTypeService, ILogBuilder logBuilder)
         {
             _productService = productService;
             _productTypeService = productTypeService;
-            _insuranceBuilder = insuranceBuilder;
             _logBuilder = logBuilder;
         }
 
@@ -85,7 +83,9 @@ namespace Insurance.Business.Concrete
                     throw new Exception($"Product type with id: {product.ProductTypeId} of {product.Name} with is not found");
                 }
 
-                return _insuranceBuilder.BuildWithProductInformation(product, productType);
+                InsuranceBuilder insuranceBuilder = new InsuranceBuilder();
+
+                return insuranceBuilder.BuildWithProductInformation(product, productType);
             }
             catch (Exception ex)
             {
