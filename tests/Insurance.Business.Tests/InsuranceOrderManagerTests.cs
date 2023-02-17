@@ -61,5 +61,18 @@ namespace Insurance.Business.Tests
             Task result() => _insuranceOrderManager.PopulateInsuranceOrderByProductIdList(new List<int> { 1, 2, 3 });
             await Assert.ThrowsAsync<Exception>(result);
         }
+
+        [Fact]
+        public async Task PopulateInsuranceOrderByProductIdList_GivenProductListWithDigitalCameras_ShouldAdd500EurosToTotalInsuranceCost()
+        {
+            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+                .Returns(Task.FromResult(new InsuranceModel()));
+
+            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
+                .Returns(new InsuranceModel() { InsuranceValue = 500, ProductTypeName = "Digital cameras" });
+
+            var result = await _insuranceOrderManager.PopulateInsuranceOrderByProductIdList(new List<int> { 1, 2, 3 });
+            Assert.Equal(2000, result.TotalInsuranceAmount);
+        }
     }
 }

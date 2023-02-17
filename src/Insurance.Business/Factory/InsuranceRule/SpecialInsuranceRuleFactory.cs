@@ -1,4 +1,4 @@
-﻿using Insurance.Business.Factory.Insurance.Abstract;
+﻿using Insurance.Business.Factory.InsuranceRule.Abstract;
 using Insurance.Business.Factory.Insurance.SpecialRules;
 using System;
 using System.Collections.Generic;
