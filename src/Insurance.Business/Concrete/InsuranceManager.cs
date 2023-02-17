@@ -48,7 +48,7 @@ namespace Insurance.Business.Concrete
                     insuranceModel.InsuranceValue += regularRule.GetInsuranceAmount();
                 }
 
-                var specialRule = SpecialInsuranceRuleFactory.CreateRule(insuranceModel.ProductTypeName);
+                var specialRule = SpecialInsuranceRuleFactory.CreateRule(insuranceModel.ProductTypeId);
                 if (specialRule == null)
                 {
                     Log.Information($"Special insurance rule is not found for object {JsonConvert.SerializeObject(insuranceModel)}");

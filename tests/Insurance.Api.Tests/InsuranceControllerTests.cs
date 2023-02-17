@@ -9,23 +9,23 @@ using Moq;
 
 namespace Insurance.Api.Tests
 {
-    public class HomeControllerTests
+    public class InsuranceControllerTests
     {
         private readonly Mock<IInsuranceService> _insuranceServiceMock;
         private readonly Mock<IInsuranceOrderService> _insuranceOrderServiceMock;
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<ILogBuilder> _logBuilderMock;
 
-        private readonly HomeController _controller;
+        private readonly InsuranceController _controller;
 
-        public HomeControllerTests()
+        public InsuranceControllerTests()
         {
             _insuranceServiceMock = new Mock<IInsuranceService>();
             _insuranceOrderServiceMock = new Mock<IInsuranceOrderService>();
             _mapperMock = new Mock<IMapper>();
             _logBuilderMock = new Mock<ILogBuilder>();
 
-            _controller = new HomeController(_insuranceServiceMock.Object, _insuranceOrderServiceMock.Object, _mapperMock.Object, _logBuilderMock.Object);
+            _controller = new InsuranceController(_insuranceServiceMock.Object, _insuranceOrderServiceMock.Object, _mapperMock.Object, _logBuilderMock.Object);
         }
 
         [Fact]

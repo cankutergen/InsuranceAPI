@@ -13,6 +13,8 @@ namespace Insurance.Entities.Concrete
 
         public float InsuranceValue { get; set; }
 
+        public int ProductTypeId { get; set; }
+
         [JsonIgnore]
         public string ProductTypeName { get; set; }
 

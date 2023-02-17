@@ -27,28 +27,12 @@ namespace Insurance.Business.Concrete
 
         public async Task<List<Product>> GetAllProducts()
         {
-            try
-            {
-                return await _productApi.GetList("/products");
-            }
-            catch (Exception ex)
-            {
-                Log.Error(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(ex), new { Query = "/products" }));
-                return new List<Product>();
-            }        
+            return await _productApi.GetList("/products");
         }
 
         public async Task<Product> GetProductById(int id)
         {
-            try
-            {
-                return await _productApi.Get($"/products/{id}");
-            }
-            catch (Exception ex)
-            {
-                Log.Error(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(ex), new { Query = $"/products/{id}" }));
-                return null;
-            }
+            return await _productApi.Get($"/products/{id}");
         }
     }
 }

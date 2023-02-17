@@ -30,6 +30,7 @@ namespace Insurance.Business.Builder.Insurance
             _insuranceModel.ProductId = product.Id;
             _insuranceModel.ProductTypeName = productType.Name;
             _insuranceModel.ProductTypeHasInsurance = productType.CanBeInsured;
+            _insuranceModel.ProductTypeId = productType.Id;
         }
 
         private void BuildSalesPrice(Product product)

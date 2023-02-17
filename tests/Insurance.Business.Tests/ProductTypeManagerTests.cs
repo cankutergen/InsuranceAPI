@@ -42,16 +42,6 @@ namespace Insurance.Business.Tests
             Assert.Equal(result.Count, products.Count);
         }
 
-        [Fact]
-        public async Task GetAllProductTypes_WhenErrorThrown_ShouldReturnDefaultList()
-        {
-            _productTypeApiMock.Setup(x => x.GetList(It.IsAny<string>()))
-                .Throws(new NullReferenceException());
-
-            var result = await _productTypeManager.GetAllProductTypes();
-
-            Assert.Empty(result);
-        }
 
         [Fact]
         public async Task GetProductTypeById_GivenProductId_ShouldReturnCorrespondingProductType()
@@ -64,17 +54,6 @@ namespace Insurance.Business.Tests
             var result = await _productTypeManager.GetProductTypeById(productType.Id);
 
             Assert.Same(productType, result);
-        }
-
-        [Fact]
-        public async Task GetProductTypeById_WhenErrorThrown_ShouldReturnNull()
-        {
-            _productTypeApiMock.Setup(x => x.Get("/product_types/1"))
-                .Throws(new NullReferenceException());
-
-            var result = await _productTypeManager.GetProductTypeById(1);
-
-            Assert.Null(result);
         }
     }
 }
