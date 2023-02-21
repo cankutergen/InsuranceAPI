@@ -1,6 +1,6 @@
 using AutoMapper;
 using Insurance.Api.Controllers;
-using Insurance.Api.Models;
+using Insurance.Api.Models.Insurance;
 using Insurance.Business.Abstract;
 using Insurance.Core.Logging;
 using Insurance.Entities.Concrete;
@@ -32,7 +32,7 @@ namespace Insurance.Api.Tests
         public async Task CalculateInsurance_GivenValidInput_ShouldReturnOkResult()
         {
             _insuranceServiceMock
-                .Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+                .Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
             _insuranceServiceMock
@@ -51,7 +51,7 @@ namespace Insurance.Api.Tests
         public async Task CalculateInsurance_GivenInvalidInputToInsuranceService_ShouldReturnBadRequestResult()
         {
             _insuranceServiceMock
-                .Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+                .Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Throws(new NullReferenceException());
 
             var result = await _controller.CalculateInsurance(new InsuranceRequestModel()) as BadRequestObjectResult;
@@ -72,7 +72,7 @@ namespace Insurance.Api.Tests
             requestModel.OrderProducts = new List<OrderProduct>();
 
             _insuranceOrderServiceMock
-                .Setup(x => x.PopulateOrderInsurance(new List<OrderProduct>()))
+                .Setup(x => x.PopulateOrderInsuranceAsync(new List<OrderProduct>()))
                 .Returns(Task.FromResult(new OrderInsurance()));
 
             _mapperMock
@@ -87,7 +87,7 @@ namespace Insurance.Api.Tests
         public async Task CalculateOrderInsurance_GivenInvalidInputToInsuranceService_ShouldReturnBadRequestResult()
         {
             _insuranceServiceMock
-                .Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+                .Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Throws(new NullReferenceException());
 
             var result = await _controller.CalculateOrderInsurance(new OrderInsuranceRequestModel()) as BadRequestObjectResult;

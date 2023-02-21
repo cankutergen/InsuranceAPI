@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Insurance.Api.Models
+namespace Insurance.Api.Models.Insurance
 {
     public class InsuranceRequestModel
     {

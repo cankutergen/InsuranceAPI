@@ -26,7 +26,7 @@ namespace Insurance.Business.Concrete
             _logBuilder = logBuilder;
         }
 
-        public async Task<OrderInsurance> PopulateOrderInsurance(List<OrderProduct> orderProducts)
+        public async Task<OrderInsurance> PopulateOrderInsuranceAsync(List<OrderProduct> orderProducts)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace Insurance.Business.Concrete
                 
                 foreach (var orderProduct in orderProducts)
                 {
-                    InsuranceModel insuranceModel = await _insuranceService.PopulateInsuranceByProductId(orderProduct.ProductId);
+                    InsuranceModel insuranceModel = await _insuranceService.PopulateInsuranceByProductIdAsync(orderProduct.ProductId);
                     if(insuranceModel == null)
                     {
                         throw new Exception($"Insurance with product id: {orderProduct.ProductId} is not found");

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.DataAccess.Concrete
+namespace Insurance.DataAccess.Concrete.RestSharp
 {
     public class ProductTypeApi : ApiRepositoryBase<ProductType, ErrorModel>, IProductTypeApi
     {

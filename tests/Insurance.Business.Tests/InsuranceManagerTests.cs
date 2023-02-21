@@ -1,5 +1,4 @@
 ﻿using Insurance.Business.Abstract;
-using Insurance.Business.Builder.Insurance;
 using Insurance.Business.Concrete;
 using Insurance.Core.Logging;
 using Insurance.Entities.Concrete;
@@ -30,7 +29,7 @@ namespace Insurance.Business.Tests
         }
 
         [Fact]
-        public async Task PopulateInsuranceByProductId_GivenProductId_ShouldReturnCorrospondingInsuranceObject()
+        public async Task PopulateInsuranceByProductIdAsync_GivenProductId_ShouldReturnCorrospondingInsuranceObject()
         {
             InsuranceModel insuranceModel = new InsuranceModel
             {
@@ -44,37 +43,37 @@ namespace Insurance.Business.Tests
             Product product = new Product { Id = 1, Name = "Macbook", ProductTypeId = 1, SalesPrice = 500 };
             ProductType productType = new ProductType { CanBeInsured = true, Id = 1, Name = "Laptops" };
 
-            _productServiceMock.Setup(x => x.GetProductById(1))
+            _productServiceMock.Setup(x => x.GetProductByIdAsync(1))
                 .Returns(Task.FromResult(product));
 
-            _productTypeServiceMock.Setup(x => x.GetProductTypeById(1))
+            _productTypeServiceMock.Setup(x => x.GetProductTypeByIdAsync(1))
                 .Returns(Task.FromResult(productType));
 
-            var result = await _insuranceManager.PopulateInsuranceByProductId(1);
+            var result = await _insuranceManager.PopulateInsuranceByProductIdAsync(1);
             Assert.Equal(result.ProductId, insuranceModel.ProductId);
         }
 
         [Fact]
-        public async Task PopulateInsuranceByProductId_GivenProductIdWithNullProductResponse_ShouldThrowError()
+        public async Task PopulateInsuranceByProductIdAsync_GivenProductIdWithNullProductResponse_ShouldThrowError()
         {
-            _productServiceMock.Setup(x => x.GetProductById(1))
+            _productServiceMock.Setup(x => x.GetProductByIdAsync(1))
                 .Returns(Task.FromResult((Product)null));
 
 
-            Task result() => _insuranceManager.PopulateInsuranceByProductId(1);
+            Task result() => _insuranceManager.PopulateInsuranceByProductIdAsync(1);
             await Assert.ThrowsAsync<Exception>(result);
         }
 
         [Fact]
-        public async Task PopulateInsuranceByProductId_GivenProductIdWithNullproductTypeResponse_ShouldThrowError()
+        public async Task PopulateInsuranceByProductIdAsync_GivenProductIdWithNullproductTypeResponse_ShouldThrowError()
         {
-            _productServiceMock.Setup(x => x.GetProductById(1))
+            _productServiceMock.Setup(x => x.GetProductByIdAsync(1))
                 .Returns(Task.FromResult(new Product {ProductTypeId = 1}));
 
-            _productTypeServiceMock.Setup(x => x.GetProductTypeById(1))
+            _productTypeServiceMock.Setup(x => x.GetProductTypeByIdAsync(1))
                 .Throws(new Exception());
 
-            Task result() => _insuranceManager.PopulateInsuranceByProductId(1);
+            Task result() => _insuranceManager.PopulateInsuranceByProductIdAsync(1);
             await Assert.ThrowsAsync<Exception>(result);
         }
 

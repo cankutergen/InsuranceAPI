@@ -28,7 +28,7 @@ namespace Insurance.Business.Tests
         }
 
         [Fact]
-        public async Task PopulateOrderInsurance_Given2ProductsWithSalesPriceLessThan500EurosWithQuantity1_ShouldAddZeroToTotalInsuranceCost()
+        public async Task PopulateOrderInsuranceAsync_Given2ProductsWithSalesPriceLessThan500EurosWithQuantity1_ShouldAddZeroToTotalInsuranceCost()
         {
             float expected = 0;
 
@@ -38,18 +38,18 @@ namespace Insurance.Business.Tests
                 new OrderProduct {ProductId = 2, Quantity = 1 }
             };
 
-            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
             _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
                 .Returns(new InsuranceModel() { InsuranceValue = 0});
 
-            var result = await _orderInsuranceManager.PopulateOrderInsurance(orderProducts);
+            var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);
         }
 
         [Fact]
-        public async Task PopulateOrderInsurance_Given3ProductsWithSalesPriceLessThan500EurosLaptopsWithQuantity1_ShouldAdd1500EurosToTotalInsuranceCost()
+        public async Task PopulateOrderInsuranceAsync_Given3ProductsWithSalesPriceLessThan500EurosLaptopsWithQuantity1_ShouldAdd1500EurosToTotalInsuranceCost()
         {
             float expected = 1500;
 
@@ -60,33 +60,33 @@ namespace Insurance.Business.Tests
                 new OrderProduct {ProductId = 3, Quantity = 1 }
             };
 
-            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
             _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
                 .Returns(new InsuranceModel() { InsuranceValue = 500 });
 
-            var result = await _orderInsuranceManager.PopulateOrderInsurance(orderProducts);
+            var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);
         }
 
         [Fact]
-        public async Task PopulateOrderInsurance_GivenInvalidInput_ShouldThrowError()
+        public async Task PopulateOrderInsuranceAsync_GivenInvalidInput_ShouldThrowError()
         {
             List<OrderProduct> orderProducts = new List<OrderProduct>()
             {
                 new OrderProduct {ProductId = 1, Quantity = 1 }
             };
 
-            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Throws(new Exception());
 
-            Task result() => _orderInsuranceManager.PopulateOrderInsurance(orderProducts);
+            Task result() => _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             await Assert.ThrowsAsync<Exception>(result);
         }
 
         [Fact]
-        public async Task PopulateOrderInsurance_Given3ProductsWithDigitalCamerasWithQuantity1_ShouldAdd2000EurosToTotalInsuranceCost()
+        public async Task PopulateOrderInsuranceAsync_Given3ProductsWithDigitalCamerasWithQuantity1_ShouldAdd2000EurosToTotalInsuranceCost()
         {
             float expected = 2000;
 
@@ -97,18 +97,18 @@ namespace Insurance.Business.Tests
                 new OrderProduct {ProductId = 3, Quantity = 1 }
             };
 
-            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
             _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
                 .Returns(new InsuranceModel() { InsuranceValue = 500, ProductTypeId = 33 });
 
-            var result = await _orderInsuranceManager.PopulateOrderInsurance(orderProducts);
+            var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);
         }
 
         [Fact]
-        public async Task PopulateOrderInsurance_Given2ProductsSalesPriceBetween500And2000WithQuantity2_ShouldAdd4000EurosToTotalInsuranceCost()
+        public async Task PopulateOrderInsuranceAsync_Given2ProductsSalesPriceBetween500And2000WithQuantity2_ShouldAdd4000EurosToTotalInsuranceCost()
         {
             float expected = 4000;
 
@@ -118,18 +118,18 @@ namespace Insurance.Business.Tests
                 new OrderProduct {ProductId = 2, Quantity = 2 }
             };
 
-            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
             _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
                 .Returns(new InsuranceModel() { InsuranceValue = 1000 });
 
-            var result = await _orderInsuranceManager.PopulateOrderInsurance(orderProducts);
+            var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);
         }
 
         [Fact]
-        public async Task PopulateOrderInsurance_Given3ProductsWithSalesPriceLessThan500EurosLaptopsWithQuantity2_ShouldAdd3000EurosToTotalInsuranceCost()
+        public async Task PopulateOrderInsuranceAsync_Given3ProductsWithSalesPriceLessThan500EurosLaptopsWithQuantity2_ShouldAdd3000EurosToTotalInsuranceCost()
         {
             float expected = 3000;
 
@@ -140,13 +140,13 @@ namespace Insurance.Business.Tests
                 new OrderProduct {ProductId = 3, Quantity = 2 }
             };
 
-            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
+            _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
             _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
                 .Returns(new InsuranceModel() { InsuranceValue = 500 });
 
-            var result = await _orderInsuranceManager.PopulateOrderInsurance(orderProducts);
+            var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);
         }
     }

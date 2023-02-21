@@ -9,6 +9,6 @@ namespace Insurance.Business.Abstract
 {
     public interface IOrderInsuranceService
     {
-        Task<OrderInsurance> PopulateOrderInsurance(List<OrderProduct> orderProducts);
+        Task<OrderInsurance> PopulateOrderInsuranceAsync(List<OrderProduct> orderProducts);
     }
 }

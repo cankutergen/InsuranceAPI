@@ -67,17 +67,17 @@ namespace Insurance.Business.Concrete
             }
         }
 
-        public async Task<InsuranceModel> PopulateInsuranceByProductId(int productId)
+        public async Task<InsuranceModel> PopulateInsuranceByProductIdAsync(int productId)
         {
             try
             {
-                var product = await _productService.GetProductById(productId);
+                var product = await _productService.GetProductByIdAsync(productId);
                 if (product == null)
                 {
                     throw new Exception($"Product with id: {productId} is not found");
                 }
 
-                var productType = await _productTypeService.GetProductTypeById(product.ProductTypeId);
+                var productType = await _productTypeService.GetProductTypeByIdAsync(product.ProductTypeId);
                 if (productType == null)
                 {
                     throw new Exception($"Product type with id: {product.ProductTypeId} of {product.Name} with is not found");

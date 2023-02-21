@@ -9,8 +9,8 @@ namespace Insurance.Business.Abstract
 {
     public interface IProductService
     {
-        Task<Product> GetProductById(int id);
+        Task<Product> GetProductByIdAsync(int id);
 
-        Task<List<Product>> GetAllProducts();
+        Task<List<Product>> GetAllProductsAsync();
     }
 }

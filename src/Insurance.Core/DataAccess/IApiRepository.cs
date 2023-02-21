@@ -11,8 +11,8 @@ namespace Insurance.Core.DataAccess
         where TResponse : class, IEntity, new()
         where TError : class, IError, new()
     {
-        Task<TResponse> Get(string query);
+        Task<TResponse> GetAsync(string query);
 
-        Task<List<TResponse>> GetList(string query);
+        Task<List<TResponse>> GetListAsync(string query);
     }
 }

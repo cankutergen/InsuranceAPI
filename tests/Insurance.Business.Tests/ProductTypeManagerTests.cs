@@ -27,31 +27,31 @@ namespace Insurance.Business.Tests
         }
 
         [Fact]
-        public async Task GetAllProductTypes_GivenQuery_ShouldReturnListOfProductTypes()
+        public async Task GetAllProductTypesAsync_GivenQuery_ShouldReturnListOfProductTypes()
         {
             List<ProductType> products = new List<ProductType> {
                 new ProductType{ Id = 1, Name = "Laptops" },
                 new ProductType{ Id = 2, Name = "Smartphones"}
             };
 
-            _productTypeApiMock.Setup(x => x.GetList(It.IsAny<string>()))
+            _productTypeApiMock.Setup(x => x.GetListAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(products));
 
-            var result = await _productTypeManager.GetAllProductTypes();
+            var result = await _productTypeManager.GetAllProductTypesAsync();
 
             Assert.Equal(result.Count, products.Count);
         }
 
 
         [Fact]
-        public async Task GetProductTypeById_GivenProductId_ShouldReturnCorrespondingProductType()
+        public async Task GetProductTypeByIdAsync_GivenProductId_ShouldReturnCorrespondingProductType()
         {
             ProductType productType = new ProductType { Id = 1, Name = "Laptop", CanBeInsured = true };
 
-            _productTypeApiMock.Setup(x => x.Get("/product_types/1"))
+            _productTypeApiMock.Setup(x => x.GetAsync("/product_types/1"))
                 .Returns(Task.FromResult(productType));
 
-            var result = await _productTypeManager.GetProductTypeById(productType.Id);
+            var result = await _productTypeManager.GetProductTypeByIdAsync(productType.Id);
 
             Assert.Same(productType, result);
         }
