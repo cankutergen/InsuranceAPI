@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Insurance.Business.Abstract
 {
-    public interface IInsuranceOrderService
+    public interface IOrderInsuranceService
     {
-        Task<InsuranceOrder> PopulateInsuranceOrderByProductIdList(List<int> productIdList);
+        Task<OrderInsurance> PopulateOrderInsurance(List<OrderProduct> orderProducts);
     }
 }

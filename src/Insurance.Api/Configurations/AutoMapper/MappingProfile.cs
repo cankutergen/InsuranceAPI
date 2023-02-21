@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Insurance.Api.Models;
+using Insurance.Entities.ComplexTypes;
 using Insurance.Entities.Concrete;
 using System.Linq;
 
@@ -11,8 +12,8 @@ namespace Insurance.Api.Configurations.AutoMapper
         {
             CreateMap<InsuranceModel, InsuranceResponseModel>();
 
-            CreateMap<InsuranceOrder, InsuranceOrderResponseModel>()
-                .ForMember(x => x.productIdList, opt => opt.MapFrom(s => s.InsuranceList.Select(x => x.ProductId)));
+            CreateMap<OrderInsurance, OrderInsuranceResponseModel>();
+                
         }
     }
 }

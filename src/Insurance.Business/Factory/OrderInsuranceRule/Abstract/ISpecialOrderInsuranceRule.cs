@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.Business.Factory.InsuranceOrderRule.Abstract
+namespace Insurance.Business.Factory.OrderInsuranceRule.Abstract
 {
-    public interface ISpecialInsuranceOrderRule
+    public interface ISpecialOrderInsuranceRule : IOrderInsuranceRule
     {
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.Business.Builder.Insurance
+namespace Insurance.Business.Builder
 {
     public class InsuranceBuilder
     {

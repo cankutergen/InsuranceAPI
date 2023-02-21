@@ -18,15 +18,15 @@ namespace Insurance.Api.Controllers
     public class InsuranceController: Controller
     {
         private readonly IInsuranceService _insuranceService;
-        private readonly IInsuranceOrderService _insuranceOrderService;
+        private readonly IOrderInsuranceService _orderInsuranceService;
         private readonly IMapper _mapper;
         private readonly ILogBuilder _logBuilder;
 
         
-        public InsuranceController(IInsuranceService insuranceService, IInsuranceOrderService insuranceOrderService, IMapper mapper, ILogBuilder logBuilder)
+        public InsuranceController(IInsuranceService insuranceService, IOrderInsuranceService orderInsuranceService, IMapper mapper, ILogBuilder logBuilder)
         {
             _insuranceService = insuranceService;
-            _insuranceOrderService = insuranceOrderService;
+            _orderInsuranceService = orderInsuranceService;
             _mapper = mapper;
             _logBuilder = logBuilder;
         }
@@ -57,23 +57,23 @@ namespace Insurance.Api.Controllers
 
         [HttpPost]
         [Route("api/insurance/order")]
-        public async Task<IActionResult> CalculateOrderInsurance([FromBody] InsuranceOrderRequestModel orderApiModel)
+        public async Task<IActionResult> CalculateOrderInsurance([FromBody] OrderInsuranceRequestModel orderInsuranceRequestModel)
         {
             try
             {
-                if(orderApiModel == null || orderApiModel.productIdList == null)
+                if(orderInsuranceRequestModel == null || orderInsuranceRequestModel.OrderProducts == null)
                 {
                     throw new Exception("Invalid input");
                 }
 
-                InsuranceOrder insuranceOrder = await _insuranceOrderService.PopulateInsuranceOrderByProductIdList(orderApiModel.productIdList);
-                InsuranceOrderResponseModel responseModel = _mapper.Map<InsuranceOrderResponseModel>(insuranceOrder);
+                OrderInsurance insuranceOrder = await _orderInsuranceService.PopulateOrderInsurance(orderInsuranceRequestModel.OrderProducts);
+                OrderInsuranceResponseModel responseModel = _mapper.Map<OrderInsuranceResponseModel>(insuranceOrder);
 
                 return await Task.FromResult(Ok(responseModel));
             }
             catch (Exception ex)
             {
-                Log.Error(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(ex), orderApiModel));
+                Log.Error(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(ex), orderInsuranceRequestModel));
                 return BadRequest(new ResponseErrorModel { Error = ex.Message, StatusCode = 500 });
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Insurance.Entities.ComplexTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Insurance.Entities.Concrete
 {
-    public class InsuranceOrder
+    public class OrderInsurance
     {
-        public List<InsuranceModel> InsuranceList { get; set; }
+        public List<OrderProductDetail> OrderProductDetails { get; set; }
 
         public float TotalInsuranceAmount { get; set; }
 
-        public InsuranceOrder()
+        public OrderInsurance()
         {
-            InsuranceList = new List<InsuranceModel>();
+            OrderProductDetails = new List<OrderProductDetail>();
             TotalInsuranceAmount = 0;
         }
     }
