@@ -6,6 +6,7 @@ using Insurance.Business.Abstract;
 using Insurance.Core.Logging;
 using Insurance.Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace Insurance.Api.Tests
         private readonly Mock<ISurchargeRateService> _surchargeRateServiceMock;
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<ILogBuilder> _logBuilderMock;
+        private readonly IMemoryCache _cache;
 
         private readonly SurchargeRateController _controller;
 
@@ -28,8 +30,9 @@ namespace Insurance.Api.Tests
             _surchargeRateServiceMock = new Mock<ISurchargeRateService>(); 
             _mapperMock = new Mock<IMapper>();
             _logBuilderMock = new Mock<ILogBuilder>();
+            _cache = new MemoryCache(new MemoryCacheOptions());
 
-            _controller = new SurchargeRateController(_surchargeRateServiceMock.Object, _mapperMock.Object, _logBuilderMock.Object);
+            _controller = new SurchargeRateController(_surchargeRateServiceMock.Object, _mapperMock.Object, _logBuilderMock.Object, _cache);
         }
 
         [Fact]
@@ -41,7 +44,7 @@ namespace Insurance.Api.Tests
             _mapperMock
              .Setup(x => x.Map<SurchargeResponseModel>(It.IsAny<SurchargeRate>()))
              .Returns(new SurchargeResponseModel());
-
+    
             var result = await _controller.GetById(It.IsAny<int>()) as OkObjectResult;
             Assert.IsType<OkObjectResult>(result);
         }
@@ -146,6 +149,9 @@ namespace Insurance.Api.Tests
             _surchargeRateServiceMock.Setup(x => x.UpdateSurchargeRateAsync(It.IsAny<SurchargeRate>()))
                 .Returns(Task.FromResult(new SurchargeRate()));
 
+            _surchargeRateServiceMock.Setup(x => x.GetSurchargeRateByIdAsync(It.IsAny<int>()))
+                .Returns(Task.FromResult(new SurchargeRate()));
+
             _mapperMock
              .Setup(x => x.Map<SurchargeRate>(It.IsAny<SurchargePutRequestModel>()))
              .Returns(new SurchargeRate());
@@ -154,7 +160,7 @@ namespace Insurance.Api.Tests
              .Setup(x => x.Map<SurchargeResponseModel>(It.IsAny<SurchargeRate>()))
              .Returns(new SurchargeResponseModel());
 
-            var result = await _controller.Put(It.IsAny<SurchargePutRequestModel>()) as OkObjectResult;
+            var result = await _controller.Put(new SurchargePutRequestModel()) as OkObjectResult;
             Assert.IsType<OkObjectResult>(result);
         }
 
@@ -175,6 +181,9 @@ namespace Insurance.Api.Tests
         [Fact]
         public async Task Delete_GivenValidInput_ShouldReturnOkResponse()
         {
+            _surchargeRateServiceMock.Setup(x => x.GetSurchargeRateByIdAsync(It.IsAny<int>()))
+            .Returns(Task.FromResult(new SurchargeRate()));
+
             var result = await _controller.Delete(It.IsAny<int>()) as OkResult;
             Assert.IsType<OkResult>(result);
         }

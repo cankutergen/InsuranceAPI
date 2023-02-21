@@ -41,8 +41,8 @@ namespace Insurance.Business.Tests
             _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
-            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
-                .Returns(new InsuranceModel() { InsuranceValue = 0});
+            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmountAsync(It.IsAny<InsuranceModel>()))
+                .Returns(Task.FromResult(new InsuranceModel() { InsuranceValue = 0}));
 
             var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);
@@ -63,8 +63,8 @@ namespace Insurance.Business.Tests
             _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
-            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
-                .Returns(new InsuranceModel() { InsuranceValue = 500 });
+            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmountAsync(It.IsAny<InsuranceModel>()))
+                .Returns(Task.FromResult(new InsuranceModel() { InsuranceValue = 500 }));
 
             var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);
@@ -100,8 +100,8 @@ namespace Insurance.Business.Tests
             _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
-            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
-                .Returns(new InsuranceModel() { InsuranceValue = 500, ProductTypeId = 33 });
+            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmountAsync(It.IsAny<InsuranceModel>()))
+                .Returns(Task.FromResult(new InsuranceModel() { InsuranceValue = 500, ProductTypeId = 33 }));
 
             var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);
@@ -121,8 +121,8 @@ namespace Insurance.Business.Tests
             _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
-            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
-                .Returns(new InsuranceModel() { InsuranceValue = 1000 });
+            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmountAsync(It.IsAny<InsuranceModel>()))
+                .Returns(Task.FromResult(new InsuranceModel() { InsuranceValue = 1000 }));
 
             var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);
@@ -143,8 +143,8 @@ namespace Insurance.Business.Tests
             _insuranceServiceMock.Setup(x => x.PopulateInsuranceByProductIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new InsuranceModel()));
 
-            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
-                .Returns(new InsuranceModel() { InsuranceValue = 500 });
+            _insuranceServiceMock.Setup(x => x.CalculateInsuranceAmountAsync(It.IsAny<InsuranceModel>()))
+                .Returns(Task.FromResult(new InsuranceModel() { InsuranceValue = 500 }));
 
             var result = await _orderInsuranceManager.PopulateOrderInsuranceAsync(orderProducts);
             Assert.Equal(expected, result.TotalInsuranceAmount);

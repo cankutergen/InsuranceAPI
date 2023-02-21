@@ -16,6 +16,7 @@ namespace Insurance.Business.Tests
         private readonly Mock<IProductService> _productServiceMock;
         private readonly Mock<IProductTypeService> _productTypeServiceMock;
         private readonly Mock<ILogBuilder> _logBuilderMock;
+        private readonly Mock<ISurchargeRateService> _surcharRateServiceMock;
 
         private readonly InsuranceManager _insuranceManager;
 
@@ -24,8 +25,9 @@ namespace Insurance.Business.Tests
             _productServiceMock = new Mock<IProductService>();
             _productTypeServiceMock = new Mock<IProductTypeService>();
             _logBuilderMock = new Mock<ILogBuilder>();
+            _surcharRateServiceMock = new Mock<ISurchargeRateService>();
 
-            _insuranceManager = new InsuranceManager(_productServiceMock.Object, _productTypeServiceMock.Object, _logBuilderMock.Object);
+            _insuranceManager = new InsuranceManager(_productServiceMock.Object, _productTypeServiceMock.Object, _logBuilderMock.Object, _surcharRateServiceMock.Object);
         }
 
         [Fact]
@@ -78,7 +80,7 @@ namespace Insurance.Business.Tests
         }
 
         [Fact]
-        public void CalculateInsuranceAmount_GivenHasInsuranceFalse_ShouldReturnZero()
+        public async Task CalculateInsuranceAmountAsync_GivenHasInsuranceFalse_ShouldReturnZero()
         {
             float expectedInsuranceAmount = 0;
 
@@ -91,12 +93,12 @@ namespace Insurance.Business.Tests
                 SalesPrice = 500
             };
 
-            var result = _insuranceManager.CalculateInsuranceAmount(insuranceModel);
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
             Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
         }
 
         [Fact]
-        public void CalculateInsuranceAmount_GivenSalesPriceLessThan500Euros_ShouldReturnZero()
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceLessThan500Euros_ShouldReturnZero()
         {
             float expectedInsuranceAmount = 0;
 
@@ -109,12 +111,12 @@ namespace Insurance.Business.Tests
                 SalesPrice = 499
             };
 
-            var result = _insuranceManager.CalculateInsuranceAmount(insuranceModel);
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
             Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
         }
 
         [Fact]
-        public void CalculateInsuranceAmount_GivenSalesPriceLessThan500EurosAndProductTypeLaptops_ShouldAdd500EurosToInsuranceCost()
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceLessThan500EurosAndProductTypeLaptops_ShouldAdd500EurosToInsuranceCost()
         {
             float expectedInsuranceAmount = 500;
 
@@ -128,12 +130,12 @@ namespace Insurance.Business.Tests
                 SalesPrice = 499
             };
 
-            var result = _insuranceManager.CalculateInsuranceAmount(insuranceModel);
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
             Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
         }
 
         [Fact]
-        public void CalculateInsuranceAmount_GivenSalesPriceBetween500And2000Euros_ShouldAdd1000EurosToInsuranceCost()
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceBetween500And2000Euros_ShouldAdd1000EurosToInsuranceCost()
         {
             float expectedInsuranceAmount = 1000;
 
@@ -146,12 +148,12 @@ namespace Insurance.Business.Tests
                 SalesPrice = 1500
             };
 
-            var result = _insuranceManager.CalculateInsuranceAmount(insuranceModel);
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
             Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
         }
 
         [Fact]
-        public void CalculateInsuranceAmount_GivenSalesPriceBetween500And2000EurosAndProductTypeSmartphones_ShouldAdd1500EurosToInsuranceCost()
+        public async void CalculateInsuranceAmountAsync_GivenSalesPriceBetween500And2000EurosAndProductTypeSmartphones_ShouldAdd1500EurosToInsuranceCost()
         {
             float expectedInsuranceAmount = 1500;
 
@@ -165,12 +167,12 @@ namespace Insurance.Business.Tests
                 SalesPrice = 1500
             };
 
-            var result = _insuranceManager.CalculateInsuranceAmount(insuranceModel);
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
             Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
         }
 
         [Fact]
-        public void CalculateInsuranceAmount_GivenSalesPriceHigherThan2000Euros_ShouldAdd2000EurosToInsuranceCost()
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceHigherThan2000Euros_ShouldAdd2000EurosToInsuranceCost()
         {
             float expectedInsuranceAmount = 2000;
 
@@ -183,12 +185,12 @@ namespace Insurance.Business.Tests
                 SalesPrice = 2390
             };
 
-            var result = _insuranceManager.CalculateInsuranceAmount(insuranceModel);
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
             Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
         }
 
         [Fact]
-        public void CalculateInsuranceAmount_GivenSalesPriceHigherThan2000EurosAndProductTypeSmartphones_ShouldAdd2500EurosToInsuranceCost()
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceHigherThan2000EurosAndProductTypeSmartphones_ShouldAdd2500EurosToInsuranceCost()
         {
             float expectedInsuranceAmount = 2500;
 
@@ -202,7 +204,136 @@ namespace Insurance.Business.Tests
                 SalesPrice = 2390
             };
 
-            var result = _insuranceManager.CalculateInsuranceAmount(insuranceModel);
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
+            Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
+        }
+
+        [Fact]
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceLessThan500EurosWith50SurchargeRate_ShouldReturnZero()
+        {
+            float expectedInsuranceAmount = 0;
+
+            InsuranceModel insuranceModel = new InsuranceModel
+            {
+                InsuranceValue = 0,
+                ProductId = 1,
+                ProductTypeHasInsurance = true,
+                ProductTypeName = "Cameras",
+                SalesPrice = 499
+            };
+
+            _surcharRateServiceMock.Setup(x => x.GetSurchargeRateByProductTypeIdAsync(It.IsAny<int>()))
+                .Returns(Task.FromResult(new SurchargeRate { Rate = 50 }));
+
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
+            Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
+        }
+
+        [Fact]
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceLessThan500EurosAndProductTypeLaptopsWithSurchargeRate10_ShouldAdd550EurosToInsuranceCost()
+        {
+            float expectedInsuranceAmount = 550;
+
+            InsuranceModel insuranceModel = new InsuranceModel
+            {
+                InsuranceValue = 0,
+                ProductId = 1,
+                ProductTypeHasInsurance = true,
+                ProductTypeName = "Laptops",
+                ProductTypeId = 21,
+                SalesPrice = 499
+            };
+
+            _surcharRateServiceMock.Setup(x => x.GetSurchargeRateByProductTypeIdAsync(It.IsAny<int>()))
+            .Returns(Task.FromResult(new SurchargeRate { Rate = 10 }));
+
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
+            Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
+        }
+
+        [Fact]
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceBetween500And2000EurosWithSurchargeRate20_ShouldAdd1200EurosToInsuranceCost()
+        {
+            float expectedInsuranceAmount = 1200;
+
+            InsuranceModel insuranceModel = new InsuranceModel
+            {
+                InsuranceValue = 0,
+                ProductId = 1,
+                ProductTypeHasInsurance = true,
+                ProductTypeName = "Cameras",
+                SalesPrice = 1500
+            };
+
+            _surcharRateServiceMock.Setup(x => x.GetSurchargeRateByProductTypeIdAsync(It.IsAny<int>()))
+            .Returns(Task.FromResult(new SurchargeRate { Rate = 20 }));
+
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
+            Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
+        }
+
+        [Fact]
+        public async void CalculateInsuranceAmountAsync_GivenSalesPriceBetween500And2000EurosAndProductTypeSmartphonesWithSurchargeRate10_ShouldAdd1650EurosToInsuranceCost()
+        {
+            float expectedInsuranceAmount = 1650;
+
+            InsuranceModel insuranceModel = new InsuranceModel
+            {
+                InsuranceValue = 0,
+                ProductId = 1,
+                ProductTypeHasInsurance = true,
+                ProductTypeName = "Smartphones",
+                ProductTypeId = 32,
+                SalesPrice = 1500
+            };
+
+            _surcharRateServiceMock.Setup(x => x.GetSurchargeRateByProductTypeIdAsync(It.IsAny<int>()))
+            .Returns(Task.FromResult(new SurchargeRate { Rate = 10 }));
+
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
+            Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
+        }
+
+        [Fact]
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceHigherThan2000EurosWithSurchargeRate50_ShouldAdd3000EurosToInsuranceCost()
+        {
+            float expectedInsuranceAmount = 3000;
+
+            InsuranceModel insuranceModel = new InsuranceModel
+            {
+                InsuranceValue = 0,
+                ProductId = 1,
+                ProductTypeHasInsurance = true,
+                ProductTypeName = "Washing machine",
+                SalesPrice = 2390
+            };
+
+            _surcharRateServiceMock.Setup(x => x.GetSurchargeRateByProductTypeIdAsync(It.IsAny<int>()))
+            .Returns(Task.FromResult(new SurchargeRate { Rate = 50 }));
+
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
+            Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
+        }
+
+        [Fact]
+        public async Task CalculateInsuranceAmountAsync_GivenSalesPriceHigherThan2000EurosAndProductTypeSmartphonesWithSurchargeRate100_ShouldAdd5000EurosToInsuranceCost()
+        {
+            float expectedInsuranceAmount = 5000;
+
+            InsuranceModel insuranceModel = new InsuranceModel
+            {
+                InsuranceValue = 0,
+                ProductId = 1,
+                ProductTypeHasInsurance = true,
+                ProductTypeName = "Smartphones",
+                ProductTypeId = 32,
+                SalesPrice = 2390
+            };
+
+            _surcharRateServiceMock.Setup(x => x.GetSurchargeRateByProductTypeIdAsync(It.IsAny<int>()))
+            .Returns(Task.FromResult(new SurchargeRate { Rate = 100 }));
+
+            var result = await _insuranceManager.CalculateInsuranceAmountAsync(insuranceModel);
             Assert.Equal(expectedInsuranceAmount, result.InsuranceValue);
         }
     }

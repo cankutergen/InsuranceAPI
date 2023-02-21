@@ -11,6 +11,6 @@ namespace Insurance.Business.Abstract
     {
         Task<InsuranceModel> PopulateInsuranceByProductIdAsync(int productId);
 
-        InsuranceModel CalculateInsuranceAmount(InsuranceModel insuranceModel);
+        Task<InsuranceModel> CalculateInsuranceAmountAsync(InsuranceModel insuranceModel);
     }
 }

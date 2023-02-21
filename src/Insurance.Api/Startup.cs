@@ -48,6 +48,8 @@ namespace Insurance.Api
         {
             services.AddControllers();
 
+            services.AddMemoryCache();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("Insurance", new OpenApiInfo { Title = "Insurance", Version = "v1" });

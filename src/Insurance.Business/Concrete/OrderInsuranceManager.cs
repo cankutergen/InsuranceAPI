@@ -40,7 +40,7 @@ namespace Insurance.Business.Concrete
                         throw new Exception($"Insurance with product id: {orderProduct.ProductId} is not found");
                     }
 
-                    insuranceModel = _insuranceService.CalculateInsuranceAmount(insuranceModel);
+                    insuranceModel = await _insuranceService.CalculateInsuranceAmountAsync(insuranceModel);
 
                     OrderProductDetailBuilder builder = new OrderProductDetailBuilder();
                     var orderProductDetail = builder.Build(insuranceModel, orderProduct.Quantity);

@@ -45,7 +45,7 @@ namespace Insurance.Api.Controllers
                 }
 
                 InsuranceModel insuranceModel = await _insuranceService.PopulateInsuranceByProductIdAsync(toInsure.ProductId);
-                insuranceModel = _insuranceService.CalculateInsuranceAmount(insuranceModel);
+                insuranceModel = await _insuranceService.CalculateInsuranceAmountAsync(insuranceModel);
 
                 InsuranceResponseModel response = _mapper.Map<InsuranceResponseModel>(insuranceModel);
                 return await Task.FromResult(Ok(response));

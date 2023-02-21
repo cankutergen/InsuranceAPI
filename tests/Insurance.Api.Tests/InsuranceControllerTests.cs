@@ -36,8 +36,8 @@ namespace Insurance.Api.Tests
                 .Returns(Task.FromResult(new InsuranceModel()));
 
             _insuranceServiceMock
-                .Setup(x => x.CalculateInsuranceAmount(It.IsAny<InsuranceModel>()))
-                .Returns(new InsuranceModel());
+                .Setup(x => x.CalculateInsuranceAmountAsync(It.IsAny<InsuranceModel>()))
+                .Returns(Task.FromResult(new InsuranceModel()));
 
             _mapperMock
                 .Setup(x => x.Map<InsuranceResponseModel>(It.IsAny<InsuranceModel>()))
