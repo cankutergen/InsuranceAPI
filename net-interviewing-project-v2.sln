@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Insurance.DataAccess", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Insurance.Business", "src\Insurance.Business\Insurance.Business.csproj", "{6FFA34D2-37D4-4A89-9676-E43BE4D303CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Insurance.Business.Tests", "tests\Insurance.Business.Tests\Insurance.Business.Tests.csproj", "{B8AF23EF-1754-4CEE-8275-2051D7FA13A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Insurance.Business.Tests", "tests\Insurance.Business.Tests\Insurance.Business.Tests.csproj", "{B8AF23EF-1754-4CEE-8275-2051D7FA13A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Insurance.Api.Tests", "tests\Insurance.Api.Tests\Insurance.Api.Tests.csproj", "{C71A2E35-9E45-4359-A943-86DE7D0D78BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Insurance.Api.Tests", "tests\Insurance.Api.Tests\Insurance.Api.Tests.csproj", "{C71A2E35-9E45-4359-A943-86DE7D0D78BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

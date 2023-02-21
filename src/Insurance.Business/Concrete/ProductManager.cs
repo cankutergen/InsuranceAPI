@@ -25,14 +25,14 @@ namespace Insurance.Business.Concrete
             _logBuilder = logBuilder;
         }
 
-        public async Task<List<Product>> GetAllProducts()
+        public async Task<List<Product>> GetAllProductsAsync()
         {
-            return await _productApi.GetList("/products");
+            return await _productApi.GetListAsync("/products");
         }
 
-        public async Task<Product> GetProductById(int id)
+        public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await _productApi.Get($"/products/{id}");
+            return await _productApi.GetAsync($"/products/{id}");
         }
     }
 }

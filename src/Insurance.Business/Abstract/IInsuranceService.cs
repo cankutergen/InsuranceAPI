@@ -9,8 +9,8 @@ namespace Insurance.Business.Abstract
 {
     public interface IInsuranceService
     {
-        Task<InsuranceModel> PopulateInsuranceByProductId(int productId);
+        Task<InsuranceModel> PopulateInsuranceByProductIdAsync(int productId);
 
-        InsuranceModel CalculateInsuranceAmount(InsuranceModel insuranceModel);
+        Task<InsuranceModel> CalculateInsuranceAmountAsync(InsuranceModel insuranceModel);
     }
 }

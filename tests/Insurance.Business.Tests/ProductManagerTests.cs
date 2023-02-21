@@ -22,7 +22,7 @@ namespace Insurance.Business.Tests
         }
 
         [Fact]
-        public async Task GetAllProducts_GivenQuery_ShouldReturnListOfProducts()
+        public async Task GetAllProductsAsync_GivenQuery_ShouldReturnListOfProducts()
         {
             List<Product> products = new List<Product> {
                 new Product { Id = 1, Name = "Samsung"},
@@ -30,23 +30,23 @@ namespace Insurance.Business.Tests
                 new Product { Id = 3, Name = "Oppo" }
             };
 
-            _productApiMock.Setup(x => x.GetList(It.IsAny<string>()))
+            _productApiMock.Setup(x => x.GetListAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(products));
 
-            var result = await _productManager.GetAllProducts();
+            var result = await _productManager.GetAllProductsAsync();
 
             Assert.Equal(result.Count, products.Count);
         }
 
         [Fact]
-        public async Task GetProductById_GivenProductId_ShouldReturnCorrespondingProduct()
+        public async Task GetProductByIdAsync_GivenProductId_ShouldReturnCorrespondingProduct()
         {
             Product product = new Product { Id = 1, Name = "Laptop", ProductTypeId = 1, SalesPrice = 100 };
 
-            _productApiMock.Setup(x => x.Get("/products/1"))
+            _productApiMock.Setup(x => x.GetAsync("/products/1"))
                 .Returns(Task.FromResult(product));
 
-            var result = await _productManager.GetProductById(product.Id);
+            var result = await _productManager.GetProductByIdAsync(product.Id);
 
             Assert.Same(product, result);
         }

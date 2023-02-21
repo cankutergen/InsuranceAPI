@@ -19,15 +19,17 @@ namespace Insurance.Business.Concrete
         private readonly IProductService _productService;
         private readonly IProductTypeService _productTypeService;
         private readonly ILogBuilder _logBuilder;
+        private readonly ISurchargeRateService _surchargeRateService;
 
-        public InsuranceManager(IProductService productService, IProductTypeService productTypeService, ILogBuilder logBuilder)
+        public InsuranceManager(IProductService productService, IProductTypeService productTypeService, ILogBuilder logBuilder, ISurchargeRateService surchargeRateService)
         {
             _productService = productService;
             _productTypeService = productTypeService;
             _logBuilder = logBuilder;
+            _surchargeRateService = surchargeRateService;
         }
 
-        public InsuranceModel CalculateInsuranceAmount(InsuranceModel insuranceModel)
+        public async Task<InsuranceModel> CalculateInsuranceAmountAsync(InsuranceModel insuranceModel)
         {
             try
             {
@@ -38,25 +40,11 @@ namespace Insurance.Business.Concrete
                     return insuranceModel;
                 }
 
-                var regularRule = RegularInsuranceRuleFactory.CreateRule(insuranceModel.SalesPrice);
-                if (regularRule == null)
-                {
-                    Log.Warning($"Regular insurance rule is not found for object {JsonConvert.SerializeObject(insuranceModel)}");
-                }
-                else
-                {
-                    insuranceModel.InsuranceValue += regularRule.GetInsuranceAmount();
-                }
+                AddRegularRuleAmount(ref insuranceModel);
+                AddSpecialRuleAmount(ref insuranceModel);
 
-                var specialRule = SpecialInsuranceRuleFactory.CreateRule(insuranceModel.ProductTypeId);
-                if (specialRule == null)
-                {
-                    Log.Information($"Special insurance rule is not found for object {JsonConvert.SerializeObject(insuranceModel)}");
-                }
-                else
-                {
-                    insuranceModel.InsuranceValue += specialRule.GetInsuranceAmount();
-                }
+                var surchargeRate = await _surchargeRateService.GetSurchargeRateByProductTypeIdAsync(insuranceModel.ProductTypeId);
+                AddSurchargeAmount(surchargeRate, ref insuranceModel);
 
                 return insuranceModel;
             }
@@ -67,17 +55,17 @@ namespace Insurance.Business.Concrete
             }
         }
 
-        public async Task<InsuranceModel> PopulateInsuranceByProductId(int productId)
+        public async Task<InsuranceModel> PopulateInsuranceByProductIdAsync(int productId)
         {
             try
             {
-                var product = await _productService.GetProductById(productId);
+                var product = await _productService.GetProductByIdAsync(productId);
                 if (product == null)
                 {
                     throw new Exception($"Product with id: {productId} is not found");
                 }
 
-                var productType = await _productTypeService.GetProductTypeById(product.ProductTypeId);
+                var productType = await _productTypeService.GetProductTypeByIdAsync(product.ProductTypeId);
                 if (productType == null)
                 {
                     throw new Exception($"Product type with id: {product.ProductTypeId} of {product.Name} with is not found");
@@ -91,6 +79,45 @@ namespace Insurance.Business.Concrete
             {
                 Log.Error(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(ex), productId));
                 throw new Exception(ex.Message);
+            }
+        }
+
+        private void AddRegularRuleAmount(ref InsuranceModel insuranceModel)
+        {
+            var regularRule = RegularInsuranceRuleFactory.CreateRule(insuranceModel.SalesPrice);
+            if (regularRule == null)
+            {
+                Log.Warning($"Regular insurance rule is not found for object {JsonConvert.SerializeObject(insuranceModel)}");
+            }
+            else
+            {
+                insuranceModel.InsuranceValue += regularRule.GetInsuranceAmount();
+            }
+        }
+
+        private void AddSpecialRuleAmount(ref InsuranceModel insuranceModel)
+        {
+            var specialRule = SpecialInsuranceRuleFactory.CreateRule(insuranceModel.ProductTypeId);
+            if (specialRule == null)
+            {
+                Log.Information($"Special insurance rule is not found for object {JsonConvert.SerializeObject(insuranceModel)}");
+            }
+            else
+            {
+                insuranceModel.InsuranceValue += specialRule.GetInsuranceAmount();
+            }
+        }
+
+        private void AddSurchargeAmount(SurchargeRate surchargeRate, ref InsuranceModel insuranceModel)
+        {
+            if (surchargeRate == null)
+            {
+                Log.Information($"Surcharge rate is not found for object {JsonConvert.SerializeObject(insuranceModel)}");
+            }
+            else
+            {
+                var surchargeAmount = (float)(surchargeRate.Rate / 100.0) * insuranceModel.InsuranceValue;
+                insuranceModel.InsuranceValue += surchargeAmount;
             }
         }
     }

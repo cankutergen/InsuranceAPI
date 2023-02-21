@@ -28,7 +28,7 @@ namespace Insurance.Core.DataAccess.RestSharp
             _logBuilder = logBuilder;
         }
 
-        public async Task<TResponse> Get(string query) 
+        public async Task<TResponse> GetAsync(string query) 
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Insurance.Core.DataAccess.RestSharp
             }
         }
 
-        public async Task<List<TResponse>> GetList(string query) 
+        public async Task<List<TResponse>> GetListAsync(string query) 
         {
             try
             {

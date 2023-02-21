@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
 using Insurance.Api.Models;
+using Insurance.Api.Models.Insurance;
 using Insurance.Business.Abstract;
 using Insurance.Core.Logging;
 using Insurance.Entities.Concrete;
@@ -15,14 +16,15 @@ using Serilog;
 
 namespace Insurance.Api.Controllers
 {
+    [ApiController]
+    [ApiExplorerSettings(GroupName = "Insurance")]
     public class InsuranceController: Controller
     {
         private readonly IInsuranceService _insuranceService;
         private readonly IOrderInsuranceService _orderInsuranceService;
         private readonly IMapper _mapper;
         private readonly ILogBuilder _logBuilder;
-
-        
+       
         public InsuranceController(IInsuranceService insuranceService, IOrderInsuranceService orderInsuranceService, IMapper mapper, ILogBuilder logBuilder)
         {
             _insuranceService = insuranceService;
@@ -42,8 +44,8 @@ namespace Insurance.Api.Controllers
                     throw new Exception("Invalid input");
                 }
 
-                InsuranceModel insuranceModel = await _insuranceService.PopulateInsuranceByProductId(toInsure.ProductId);
-                insuranceModel = _insuranceService.CalculateInsuranceAmount(insuranceModel);
+                InsuranceModel insuranceModel = await _insuranceService.PopulateInsuranceByProductIdAsync(toInsure.ProductId);
+                insuranceModel = await _insuranceService.CalculateInsuranceAmountAsync(insuranceModel);
 
                 InsuranceResponseModel response = _mapper.Map<InsuranceResponseModel>(insuranceModel);
                 return await Task.FromResult(Ok(response));
@@ -66,7 +68,7 @@ namespace Insurance.Api.Controllers
                     throw new Exception("Invalid input");
                 }
 
-                OrderInsurance insuranceOrder = await _orderInsuranceService.PopulateOrderInsurance(orderInsuranceRequestModel.OrderProducts);
+                OrderInsurance insuranceOrder = await _orderInsuranceService.PopulateOrderInsuranceAsync(orderInsuranceRequestModel.OrderProducts);
                 OrderInsuranceResponseModel responseModel = _mapper.Map<OrderInsuranceResponseModel>(insuranceOrder);
 
                 return await Task.FromResult(Ok(responseModel));
