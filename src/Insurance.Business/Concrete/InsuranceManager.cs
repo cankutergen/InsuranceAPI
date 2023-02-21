@@ -1,5 +1,5 @@
 ﻿using Insurance.Business.Abstract;
-using Insurance.Business.Builder.Insurance;
+using Insurance.Business.Builder;
 using Insurance.Business.Factory.Insurance;
 using Insurance.Core.Logging;
 using Insurance.Entities.Concrete;

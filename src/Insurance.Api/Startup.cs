@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Insurance.Api.Configurations.AutoMapper;
 using Insurance.Business.Abstract;
-using Insurance.Business.Builder.Insurance;
+using Insurance.Business.Builder;
 using Insurance.Business.Concrete;
 using Insurance.Core.Logging;
 using Insurance.DataAccess.Abstract;
@@ -48,7 +48,7 @@ namespace Insurance.Api
             services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<IProductTypeService, ProductTypeManager>();
             services.AddScoped<IInsuranceService, InsuranceManager>();
-            services.AddScoped<IInsuranceOrderService, InsuranceOrderManager>();
+            services.AddScoped<IOrderInsuranceService, OrderInsuranceManager>();
 
             services.AddScoped<ILogBuilder, LogBuilder>();
 

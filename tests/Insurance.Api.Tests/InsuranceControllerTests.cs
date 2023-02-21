@@ -12,7 +12,7 @@ namespace Insurance.Api.Tests
     public class InsuranceControllerTests
     {
         private readonly Mock<IInsuranceService> _insuranceServiceMock;
-        private readonly Mock<IInsuranceOrderService> _insuranceOrderServiceMock;
+        private readonly Mock<IOrderInsuranceService> _insuranceOrderServiceMock;
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<ILogBuilder> _logBuilderMock;
 
@@ -21,7 +21,7 @@ namespace Insurance.Api.Tests
         public InsuranceControllerTests()
         {
             _insuranceServiceMock = new Mock<IInsuranceService>();
-            _insuranceOrderServiceMock = new Mock<IInsuranceOrderService>();
+            _insuranceOrderServiceMock = new Mock<IOrderInsuranceService>();
             _mapperMock = new Mock<IMapper>();
             _logBuilderMock = new Mock<ILogBuilder>();
 
@@ -68,16 +68,16 @@ namespace Insurance.Api.Tests
         [Fact]
         public async Task CalculateOrderInsurance_GivenValidInput_ShouldReturnOkResult()
         {
-            InsuranceOrderRequestModel requestModel = new InsuranceOrderRequestModel();
-            requestModel.productIdList = new List<int>();
+            OrderInsuranceRequestModel requestModel = new OrderInsuranceRequestModel();
+            requestModel.OrderProducts = new List<OrderProduct>();
 
             _insuranceOrderServiceMock
-                .Setup(x => x.PopulateInsuranceOrderByProductIdList(new List<int>()))
-                .Returns(Task.FromResult(new InsuranceOrder()));
+                .Setup(x => x.PopulateOrderInsurance(new List<OrderProduct>()))
+                .Returns(Task.FromResult(new OrderInsurance()));
 
             _mapperMock
-                .Setup(x => x.Map<InsuranceOrderResponseModel>(It.IsAny<InsuranceOrder>()))
-                .Returns(new InsuranceOrderResponseModel());
+                .Setup(x => x.Map<OrderInsuranceResponseModel>(It.IsAny<OrderInsurance>()))
+                .Returns(new OrderInsuranceResponseModel());
 
             var result = await _controller.CalculateOrderInsurance(requestModel) as OkObjectResult;
             Assert.IsType<OkObjectResult>(result);
@@ -90,7 +90,7 @@ namespace Insurance.Api.Tests
                 .Setup(x => x.PopulateInsuranceByProductId(It.IsAny<int>()))
                 .Throws(new NullReferenceException());
 
-            var result = await _controller.CalculateOrderInsurance(new InsuranceOrderRequestModel()) as BadRequestObjectResult;
+            var result = await _controller.CalculateOrderInsurance(new OrderInsuranceRequestModel()) as BadRequestObjectResult;
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
@@ -104,7 +104,7 @@ namespace Insurance.Api.Tests
         [Fact]
         public async Task CalculateOrderInsurance_GivenInvalidListToApi_ShouldReturnBadRequestResult()
         {
-            var requestModel = new InsuranceOrderRequestModel();
+            var requestModel = new OrderInsuranceRequestModel();
 
             var result = await _controller.CalculateOrderInsurance(requestModel) as BadRequestObjectResult;
             Assert.IsType<BadRequestObjectResult>(result);
