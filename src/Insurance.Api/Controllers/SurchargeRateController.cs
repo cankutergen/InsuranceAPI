@@ -39,12 +39,8 @@ namespace Insurance.Api.Controllers
         [Route("GetById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var semaphore = new SemaphoreSlim(1, 1);
-
             try
             {
-                await semaphore.WaitAsync();
-
                 if (!_cache.TryGetValue($"GetById_{id}", out SurchargeResponseModel responseModel))
                 {
                     var result = await _surchargeRateService.GetSurchargeRateByIdAsync(id);
@@ -64,22 +60,14 @@ namespace Insurance.Api.Controllers
                 Log.Error(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(ex), id));
                 return BadRequest(new ResponseErrorModel { Error = ex.Message, StatusCode = 500 });
             }
-            finally
-            {
-                semaphore.Release();
-            }
         }
 
         [HttpGet]
         [Route("GetByProductTypeId")]
         public async Task<IActionResult> GetByProductTypeId(int productTypeId)
         {
-            var semaphore = new SemaphoreSlim(1, 1);
-
             try
             {
-                await semaphore.WaitAsync();
-
                 if (!_cache.TryGetValue($"GetByProductTypeId_{productTypeId}", out SurchargeResponseModel responseModel))
                 {
                     var result = await _surchargeRateService.GetSurchargeRateByProductTypeIdAsync(productTypeId);
@@ -98,10 +86,6 @@ namespace Insurance.Api.Controllers
             {
                 Log.Error(_logBuilder.BuildLog(MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(ex), productTypeId));
                 return BadRequest(new ResponseErrorModel { Error = ex.Message, StatusCode = 500 });
-            }
-            finally
-            {
-                semaphore.Release();
             }
         }
 
